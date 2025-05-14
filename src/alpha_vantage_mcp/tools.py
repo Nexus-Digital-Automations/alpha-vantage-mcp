@@ -501,9 +501,6 @@ def format_market_status(api_data: Dict[str, Any]) -> str:
         return f"Error formatting market status: {str(e)}"
 
 
-import csv
-import io
-
 def format_listing_status(csv_data: str, state: str) -> str:
     """Format listing status CSV data into a concise string.
     
@@ -2075,3 +2072,262 @@ def format_insider_transactions(transactions_data: Dict[str, Any]) -> str:
         return "\n".join(output_lines)
     except Exception as e:
         return f"Error formatting insider transactions data: {str(e)}"
+
+
+def format_stoch(indicator_data: Dict[str, Any]) -> str:
+    """Format Stochastic Oscillator (STOCH) indicator data.
+    
+    Args:
+        indicator_data: The response data from the Alpha Vantage STOCH endpoint
+        
+    Returns:
+        A formatted string containing the STOCH information
+    """
+    try:
+        # Get metadata
+        metadata = indicator_data.get("Meta Data", {})
+        if not metadata:
+            if "Error Message" in indicator_data:
+                return f"Alpha Vantage API error: {indicator_data['Error Message']}"
+            if "Information" in indicator_data:
+                return f"Alpha Vantage API information: {indicator_data['Information']}"
+            if "Note" in indicator_data:
+                return f"Alpha Vantage API Note: {indicator_data['Note']}"
+            return "No metadata available in STOCH response."
+
+        # Extract metadata details
+        symbol = metadata.get("1: Symbol", "Unknown")
+        indicator = metadata.get("2: Indicator", "Stochastic Oscillator (STOCH)")
+        last_refreshed = metadata.get("3: Last Refreshed", "N/A")
+        interval = metadata.get("4: Interval", "N/A")
+        
+        # Extract STOCH specific parameters from metadata
+        fastkperiod = metadata.get("5.1: FastK Period", "N/A")
+        slowkperiod = metadata.get("5.2: SlowK Period", "N/A")
+        slowdperiod = metadata.get("5.3: SlowD Period", "N/A")
+        slowkmatype = metadata.get("5.4: SlowK MA Type", "N/A")
+        slowdmatype = metadata.get("5.5: SlowD MA Type", "N/A")
+        
+        time_zone = metadata.get("6: Time Zone", "N/A")
+
+        # Get the stochastic oscillator values
+        stoch_values = indicator_data.get("Technical Analysis: STOCH", {})
+        if not stoch_values:
+            all_keys = ", ".join(indicator_data.keys())
+            return f"No STOCH data found. Available keys: {all_keys}"
+
+        # Format the header
+        output_lines = [
+            f"{indicator} for {symbol}",
+            f"Interval: {interval}",
+            f"FastK Period: {fastkperiod}, SlowK Period: {slowkperiod}, SlowD Period: {slowdperiod}",
+            f"SlowK MA Type: {slowkmatype}, SlowD MA Type: {slowdmatype}",
+            f"Last Refreshed: {last_refreshed} ({time_zone})",
+            "---"
+        ]
+
+        # Format the most recent 10 data points
+        count = 0
+        for date, values in list(stoch_values.items())[:10]:
+            slow_k = values.get("SlowK", "N/A")
+            slow_d = values.get("SlowD", "N/A")
+            output_lines.append(f"Date: {date} -> SlowK: {slow_k}, SlowD: {slow_d}")
+            count += 1
+        
+        # Add a note if there are more data points
+        if len(stoch_values) > 10:
+            output_lines.append(f"\n... and {len(stoch_values) - 10} more data points.")
+        
+        return "\n".join(output_lines)
+    except Exception as e:
+        return f"Error formatting STOCH data: {str(e)}"
+
+
+def format_stochf(indicator_data: Dict[str, Any]) -> str:
+    """Format Stochastic Fast (STOCHF) indicator data.
+    
+    Args:
+        indicator_data: The response data from the Alpha Vantage STOCHF endpoint
+        
+    Returns:
+        A formatted string containing the STOCHF information
+    """
+    try:
+        # Get metadata
+        metadata = indicator_data.get("Meta Data", {})
+        if not metadata:
+            if "Error Message" in indicator_data:
+                return f"Alpha Vantage API error: {indicator_data['Error Message']}"
+            if "Information" in indicator_data:
+                return f"Alpha Vantage API information: {indicator_data['Information']}"
+            if "Note" in indicator_data:
+                return f"Alpha Vantage API Note: {indicator_data['Note']}"
+            return "No metadata available in STOCHF response."
+
+        # Extract metadata details
+        symbol = metadata.get("1: Symbol", "Unknown")
+        indicator = metadata.get("2: Indicator", "Stochastic Fast (STOCHF)")
+        last_refreshed = metadata.get("3: Last Refreshed", "N/A")
+        interval = metadata.get("4: Interval", "N/A")
+        
+        # Extract STOCHF specific parameters from metadata
+        fastkperiod = metadata.get("5.1: FastK Period", "N/A")
+        fastdperiod = metadata.get("5.2: FastD Period", "N/A")
+        fastdmatype = metadata.get("5.3: FastD MA Type", "N/A")
+        
+        time_zone = metadata.get("6: Time Zone", "N/A")
+
+        # Get the stochastic fast values
+        stochf_values = indicator_data.get("Technical Analysis: STOCHF", {})
+        if not stochf_values:
+            all_keys = ", ".join(indicator_data.keys())
+            return f"No STOCHF data found. Available keys: {all_keys}"
+
+        # Format the header
+        output_lines = [
+            f"{indicator} for {symbol}",
+            f"Interval: {interval}",
+            f"FastK Period: {fastkperiod}, FastD Period: {fastdperiod}, FastD MA Type: {fastdmatype}",
+            f"Last Refreshed: {last_refreshed} ({time_zone})",
+            "---"
+        ]
+
+        # Format the most recent 10 data points
+        count = 0
+        for date, values in list(stochf_values.items())[:10]:
+            fast_k = values.get("FastK", "N/A")
+            fast_d = values.get("FastD", "N/A")
+            output_lines.append(f"Date: {date} -> FastK: {fast_k}, FastD: {fast_d}")
+            count += 1
+        
+        # Add a note if there are more data points
+        if len(stochf_values) > 10:
+            output_lines.append(f"\n... and {len(stochf_values) - 10} more data points.")
+        
+        return "\n".join(output_lines)
+    except Exception as e:
+        return f"Error formatting STOCHF data: {str(e)}"
+
+
+def format_willr(indicator_data: Dict[str, Any]) -> str:
+    """Format Williams' %R (WILLR) indicator data.
+    
+    Args:
+        indicator_data: The response data from the Alpha Vantage WILLR endpoint
+        
+    Returns:
+        A formatted string containing the WILLR information
+    """
+    try:
+        # Get metadata
+        metadata = indicator_data.get("Meta Data", {})
+        if not metadata:
+            if "Error Message" in indicator_data:
+                return f"Alpha Vantage API error: {indicator_data['Error Message']}"
+            if "Information" in indicator_data:
+                return f"Alpha Vantage API information: {indicator_data['Information']}"
+            if "Note" in indicator_data:
+                return f"Alpha Vantage API Note: {indicator_data['Note']}"
+            return "No metadata available in WILLR response."
+
+        # Extract metadata details
+        symbol = metadata.get("1: Symbol", "Unknown")
+        indicator = metadata.get("2: Indicator", "Williams' %R (WILLR)")
+        last_refreshed = metadata.get("3: Last Refreshed", "N/A")
+        interval = metadata.get("4: Interval", "N/A")
+        
+        # Extract WILLR specific parameters from metadata
+        time_period = metadata.get("5: Time Period", "N/A")
+        
+        time_zone = metadata.get("6: Time Zone", "N/A")
+
+        # Get the Williams' %R values
+        willr_values = indicator_data.get("Technical Analysis: WILLR", {})
+        if not willr_values:
+            all_keys = ", ".join(indicator_data.keys())
+            return f"No WILLR data found. Available keys: {all_keys}"
+
+        # Format the header
+        output_lines = [
+            f"{indicator} for {symbol}",
+            f"Interval: {interval}, Time Period: {time_period}",
+            f"Last Refreshed: {last_refreshed} ({time_zone})",
+            "---"
+        ]
+
+        # Format the most recent 10 data points
+        count = 0
+        for date, values in list(willr_values.items())[:10]:
+            willr = values.get("WILLR", "N/A")
+            output_lines.append(f"Date: {date} -> WILLR: {willr}")
+            count += 1
+        
+        # Add a note if there are more data points
+        if len(willr_values) > 10:
+            output_lines.append(f"\n... and {len(willr_values) - 10} more data points.")
+        
+        return "\n".join(output_lines)
+    except Exception as e:
+        return f"Error formatting WILLR data: {str(e)}"
+
+
+def format_adx(indicator_data: Dict[str, Any]) -> str:
+    """Format Average Directional Movement Index (ADX) indicator data.
+    
+    Args:
+        indicator_data: The response data from the Alpha Vantage ADX endpoint
+        
+    Returns:
+        A formatted string containing the ADX information
+    """
+    try:
+        # Get metadata
+        metadata = indicator_data.get("Meta Data", {})
+        if not metadata:
+            if "Error Message" in indicator_data:
+                return f"Alpha Vantage API error: {indicator_data['Error Message']}"
+            if "Information" in indicator_data:
+                return f"Alpha Vantage API information: {indicator_data['Information']}"
+            if "Note" in indicator_data:
+                return f"Alpha Vantage API Note: {indicator_data['Note']}"
+            return "No metadata available in ADX response."
+
+        # Extract metadata details
+        symbol = metadata.get("1: Symbol", "Unknown")
+        indicator = metadata.get("2: Indicator", "Average Directional Movement Index (ADX)")
+        last_refreshed = metadata.get("3: Last Refreshed", "N/A")
+        interval = metadata.get("4: Interval", "N/A")
+        
+        # Extract ADX specific parameters from metadata
+        time_period = metadata.get("5: Time Period", "N/A")
+        
+        time_zone = metadata.get("6: Time Zone", "N/A")
+
+        # Get the ADX values
+        adx_values = indicator_data.get("Technical Analysis: ADX", {})
+        if not adx_values:
+            all_keys = ", ".join(indicator_data.keys())
+            return f"No ADX data found. Available keys: {all_keys}"
+
+        # Format the header
+        output_lines = [
+            f"{indicator} for {symbol}",
+            f"Interval: {interval}, Time Period: {time_period}",
+            f"Last Refreshed: {last_refreshed} ({time_zone})",
+            "---"
+        ]
+
+        # Format the most recent 10 data points
+        count = 0
+        for date, values in list(adx_values.items())[:10]:
+            adx = values.get("ADX", "N/A")
+            output_lines.append(f"Date: {date} -> ADX: {adx}")
+            count += 1
+        
+        # Add a note if there are more data points
+        if len(adx_values) > 10:
+            output_lines.append(f"\n... and {len(adx_values) - 10} more data points.")
+        
+        return "\n".join(output_lines)
+    except Exception as e:
+        return f"Error formatting ADX data: {str(e)}"

@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep:*)",
+      "WebFetch(domain:www.alphavantage.co)",
+      "Bash(rg:*)",
+      "Bash(mkdir:*)",
+      "Bash(touch:*)",
+      "Bash(cat:*)",
+      "Bash(cp:*)"
+    ],
+    "deny": []
+  }
+}

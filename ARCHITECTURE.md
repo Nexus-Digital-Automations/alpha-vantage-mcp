@@ -29,22 +29,71 @@ The Alpha Vantage MCP server is built using the Model Context Protocol (MCP) to 
 src/
 └── alpha_vantage_mcp/
     ├── __init__.py
-    ├── server.py       # Main server implementation with MCP protocol handling
-    └── tools.py        # Utility functions for API requests and data formatting
+    ├── server.py               # Main server implementation with MCP protocol handling
+    ├── config/
+    │   ├── __init__.py
+    │   └── settings.py         # Configuration settings and API key validation
+    ├── api/
+    │   ├── __init__.py
+    │   └── client.py           # Alpha Vantage API client functionality
+    ├── formatters/
+    │   ├── __init__.py
+    │   ├── stocks.py           # Stock-related formatters
+    │   ├── crypto.py           # Cryptocurrency-related formatters
+    │   ├── technical.py        # Technical indicator formatters
+    │   ├── economic.py         # Economic/fundamental data formatters
+    │   └── common.py           # Shared formatting utilities
+    ├── handlers/
+    │   ├── __init__.py
+    │   ├── stocks.py           # Stock-related handlers
+    │   ├── crypto.py           # Cryptocurrency-related handlers
+    │   ├── technical.py        # Technical indicator handlers
+    │   └── economic.py         # Economic/fundamental data handlers
+    ├── models/
+    │   ├── __init__.py
+    │   └── schemas.py          # Input schemas for tools
+    └── utils/
+        ├── __init__.py
+        ├── validation.py       # Input validation utilities
+        └── error_handling.py   # Error handling utilities
 ```
 
-### Key Files
+### Key Files and Modules
 
 - **server.py**: Contains the core MCP server implementation, including:
   - Server initialization
-  - Tool definitions and schemas
-  - Tool execution handlers
+  - Tool definitions using schemas
+  - Handler dispatch mechanism
   - Main entry point for running the server
 
-- **tools.py**: Contains utility functions for:
+- **config/settings.py**: Contains configuration settings:
+  - API base URL and environment variables
+  - Error messages
+  - Response formatting settings
+
+- **api/client.py**: Handles API communication:
   - Making requests to the Alpha Vantage API
-  - Formatting API responses into human-readable text
-  - Error handling
+  - Handling API errors and responses
+  - Managing data formats (JSON/CSV)
+
+- **formatters/**: Contains formatters for different data types:
+  - **common.py**: Shared utilities for formatting numbers, dates, etc.
+  - **stocks.py**: Formatters for stock quotes, time series, company info
+  - **crypto.py**: Formatters for cryptocurrency and forex data
+  - **technical.py**: Formatters for technical indicators
+  - **economic.py**: Formatters for economic indicators and fundamental data
+
+- **handlers/**: Contains tool handlers by category:
+  - **stocks.py**: Handlers for stock-related tools
+  - **crypto.py**: Handlers for cryptocurrency-related tools
+  - **technical.py**: Handlers for technical indicator tools
+  - **economic.py**: Handlers for economic/fundamental data tools
+  
+- **models/schemas.py**: Contains JSON schemas for tool inputs
+  
+- **utils/**: Contains utility functions:
+  - **validation.py**: Input validation utilities
+  - **error_handling.py**: Error handling utilities
 
 ## Data Flow
 
@@ -97,25 +146,32 @@ Each tool follows this general pattern:
 
 ## Future Architecture
 
-As more endpoints are added, we may consider:
+Now that we've modularized the codebase, future enhancements could include:
 
-1. **Modularizing the codebase** - Grouping formatters and handlers by category (e.g., time series, fundamental data, technical indicators)
-2. **Adding caching layer** - To reduce API calls and handle rate limits more efficiently
-3. **Implementing more sophisticated error handling** - Better recovery from API failures
-4. **Adding visualization capabilities** - Returning charts as image content in addition to text
+1. **Adding caching layer** - To reduce API calls and handle rate limits more efficiently
+2. **Implementing logging system** - For better debugging and monitoring
+3. **Adding visualization capabilities** - Returning charts as image content in addition to text
+4. **Adding tests** - For better code quality and reliability
+5. **Enhancing error handling and recovery** - For better resilience against API failures
 
 ```
 Future Architecture:
-┌────────────────┐      ┌─────────────────────────────────────┐      ┌────────────────┐
-│                │      │           MCP Server                │      │                │
-│  MCP Client    │◄────►│  ┌───────────┐       ┌───────────┐  │◄────►│  Alpha Vantage │
-│  (e.g. Claude) │      │  │   Tools   │◄─────►│   Cache   │  │      │  API           │
-│                │      │  └───────────┘       └───────────┘  │      │                │
-└────────────────┘      │          ▲                 ▲        │      └────────────────┘
-                        │          │                 │        │
-                        │          ▼                 ▼        │
-                        │  ┌───────────┐       ┌───────────┐  │
-                        │  │ Formatters│       │ Visualizer│  │
-                        │  └───────────┘       └───────────┘  │
-                        └─────────────────────────────────────┘
+┌────────────────┐      ┌─────────────────────────────────────────────────────┐      ┌────────────────┐
+│                │      │                    MCP Server                       │      │                │
+│  MCP Client    │◄────►│  ┌───────────┐      ┌───────────┐      ┌─────────┐  │◄────►│  Alpha Vantage │
+│  (e.g. Claude) │      │  │  Handlers │◄────►│   Cache   │◄────►│   API   │  │      │  API           │
+│                │      │  └───────────┘      └───────────┘      └─────────┘  │      │                │
+└────────────────┘      │        ▲                  ▲                ▲        │      └────────────────┘
+                        │        │                  │                │        │
+                        │        ▼                  ▼                ▼        │
+                        │  ┌───────────┐      ┌───────────┐      ┌─────────┐  │
+                        │  │Formatters │      │Visualizer │      │ Logging │  │
+                        │  └───────────┘      └───────────┘      └─────────┘  │
+                        │        ▲                                            │
+                        │        │                                            │
+                        │        ▼                                            │
+                        │  ┌───────────┐                                      │
+                        │  │   Tests   │                                      │
+                        │  └───────────┘                                      │
+                        └─────────────────────────────────────────────────────┘
 ``` 

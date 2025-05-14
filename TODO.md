@@ -61,7 +61,7 @@ As identified in the AlphaVantage API documentation, we've implemented many endp
 
 ### Alpha Intelligence
 - [x] EARNINGS_CALL_TRANSCRIPT (Implemented as get-earnings-call-transcript)
-- [ ] INSIDER_TRANSACTIONS
+- [x] INSIDER_TRANSACTIONS (Implemented as get-insider-transactions)
 - [ ] ANALYTICS_FIXED_WINDOW
 - [ ] ANALYTICS_SLIDING_WINDOW
 - [x] IPO_CALENDAR (Implemented as get-ipo-calendar)
@@ -71,25 +71,25 @@ As identified in the AlphaVantage API documentation, we've implemented many endp
 - [ ] SPLITS
 
 ### Additional Technical Indicators
-- [ ] STOCH - Stochastic Oscillator
-- [ ] STOCHF - Stochastic Fast
-- [ ] STOCHRSI - Stochastic Relative Strength Index
-- [ ] WILLR - Williams' %R
-- [ ] ADX - Average Directional Movement Index
-- [ ] ADXR - Average Directional Movement Index Rating
-- [ ] APO - Absolute Price Oscillator
-- [ ] PPO - Percentage Price Oscillator
-- [ ] MOM - Momentum
-- [ ] BOP - Balance Of Power
-- [ ] CCI - Commodity Channel Index
-- [ ] CMO - Chande Momentum Oscillator
-- [ ] ROC - Rate of Change
-- [ ] ROCR - Rate of Change Ratio
-- [ ] AROON - Aroon
-- [ ] AROONOSC - Aroon Oscillator
-- [ ] MFI - Money Flow Index
-- [ ] TRIX - Triple Exponential Average
-- [ ] ULTOSC - Ultimate Oscillator
+- [x] STOCH - Stochastic Oscillator (Implemented as get-stoch)
+- [x] STOCHF - Stochastic Fast (Implemented as get-stochf)
+- [x] STOCHRSI - Stochastic Relative Strength Index (Implemented as get-stochrsi)
+- [x] WILLR - Williams' %R (Implemented as get-willr)
+- [x] ADX - Average Directional Movement Index (Implemented as get-adx)
+- [x] ADXR - Average Directional Movement Index Rating (Implemented as get-adxr)
+- [x] APO - Absolute Price Oscillator (Implemented as get-apo)
+- [x] PPO - Percentage Price Oscillator (Implemented as get-ppo)
+- [x] MOM - Momentum (Implemented as get-mom)
+- [x] BOP - Balance Of Power (Implemented as get-bop)
+- [x] CCI - Commodity Channel Index (Implemented as get-cci)
+- [x] CMO - Chande Momentum Oscillator (Implemented as get-cmo)
+- [x] ROC - Rate of Change (Implemented as get-roc)
+- [x] ROCR - Rate of Change Ratio (Implemented as get-rocr)
+- [x] AROON - Aroon (Implemented as get-aroon)
+- [x] AROONOSC - Aroon Oscillator (Implemented as get-aroonosc)
+- [x] MFI - Money Flow Index (Implemented as get-mfi)
+- [x] TRIX - Triple Exponential Average (Implemented as get-trix)
+- [x] ULTOSC - Ultimate Oscillator (Implemented as get-ultosc)
 - [ ] DX - Directional Movement Index
 - [ ] MINUS_DI - Minus Directional Indicator
 - [ ] PLUS_DI - Plus Directional Indicator
@@ -109,32 +109,32 @@ As identified in the AlphaVantage API documentation, we've implemented many endp
 - [ ] HT_PHASOR - Hilbert Transform - Phasor Components
 
 ### Economic Indicators
-- [ ] REAL_GDP_PER_CAPITA
-- [ ] FEDERAL_FUNDS_RATE
-- [ ] RETAIL_SALES
-- [ ] DURABLES
-- [ ] UNEMPLOYMENT
-- [ ] NONFARM_PAYROLL
+- [x] REAL_GDP_PER_CAPITA (Implemented as get-real-gdp-per-capita)
+- [x] FEDERAL_FUNDS_RATE (Implemented as get-federal-funds-rate)
+- [x] RETAIL_SALES (Implemented as get-retail-sales)
+- [x] DURABLES (Implemented as get-durables)
+- [x] UNEMPLOYMENT (Implemented as get-unemployment)
+- [x] NONFARM_PAYROLL (Implemented as get-nonfarm-payroll)
 
 ### Additional Commodities
-- [ ] COPPER
-- [ ] ALUMINUM
-- [ ] WHEAT
-- [ ] CORN
-- [ ] COTTON
-- [ ] SUGAR
-- [ ] COFFEE
-- [ ] ALL_COMMODITIES (Global Price Index)
+- [x] COPPER (Implemented as get-copper)
+- [x] ALUMINUM (Implemented as get-aluminum)
+- [x] WHEAT (Implemented as get-wheat)
+- [x] CORN (Implemented as get-corn)
+- [x] COTTON (Implemented as get-cotton)
+- [x] SUGAR (Implemented as get-sugar)
+- [x] COFFEE (Implemented as get-coffee)
+- [x] ALL_COMMODITIES (Global Price Index) (Implemented as get-all-commodities)
 
 ## Next Steps
 1. ~~Implement TIME_SERIES_MONTHLY endpoint~~ (Completed)
 2. ~~Implement TIME_SERIES_MONTHLY_ADJUSTED endpoint~~ (Completed)
 3. ~~Implement TIME_SERIES_WEEKLY_ADJUSTED endpoint~~ (Completed)
 4. ~~Implement TIME_SERIES_DAILY_ADJUSTED endpoint~~ (Completed)
-5. ~~Implement additional technical indicators~~ (Several completed)
+5. ~~Implement additional technical indicators~~ (Several completed, including STOCHRSI)
 6. ~~Implement fundamental data endpoints~~ (Several completed)
-7. ~~Implement economic indicators~~ (Several completed)
-8. ~~Implement commodities endpoints~~ (Several completed)
+7. ~~Implement economic indicators~~ (Several completed, including REAL_GDP_PER_CAPITA)
+8. ~~Implement commodities endpoints~~ (Several completed, including COPPER)
 9. Implement remaining technical indicators
 10. Implement remaining economic indicators
 11. Implement remaining commodities endpoints
